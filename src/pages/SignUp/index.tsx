@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Image,
   KeyboardAvoidingView,
@@ -6,6 +6,9 @@ import {
   View,
   ScrollView,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
 
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -17,6 +20,9 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 const SignUp: React.FC = () => {
+  const navigation = useNavigation();
+  const formRef = useRef<FormHandles>(null);
+
   return (
     <>
       <KeyboardAvoidingView
@@ -35,10 +41,16 @@ const SignUp: React.FC = () => {
               <Title>Faça seu cadastro</Title>
             </View>
 
-            <Input name="name" icon="user" placeholder="Nome" />
-            <Input name="email" icon="mail" placeholder="E-mail" />
-            <Input name="password" icon="lock" placeholder="Senha" />
-
+            <Form
+              ref={formRef}
+              onSubmit={() => {
+                console.log('signup');
+              }}
+            >
+              <Input name="name" icon="user" placeholder="Nome" />
+              <Input name="email" icon="mail" placeholder="E-mail" />
+              <Input name="password" icon="lock" placeholder="Senha" />
+            </Form>
             <Button
               onPress={() => {
                 console.log('apertou');
@@ -49,11 +61,7 @@ const SignUp: React.FC = () => {
           </Container>
         </ScrollView>
       </KeyboardAvoidingView>
-      <BackToSignIn
-        onPress={() => {
-          console.log('create acc');
-        }}
-      >
+      <BackToSignIn onPress={() => navigation.navigate('SignIn')}>
         <Icon name="arrow-left" size={20} color="#fff" />
         <BackToSignInText>Voltar para login</BackToSignInText>
       </BackToSignIn>
